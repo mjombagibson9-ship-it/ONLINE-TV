@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="sw">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ONLINE TV – Live • Movies • Series</title>
+
+<script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+
+<style>
+body{
+  margin:0;
+  font-family:Arial, sans-serif;
+  background:#0b0b0b;
+  color:#fff;
+}
+header{
+  background:#111;
+  padding:15px;
+  text-align:center;
+  font-size:22px;
+  color:#00ffd5;
+}
+nav{
+  display:flex;
+  overflow-x:auto;
+  background:#000;
+}
+nav button{
+  flex:none;
+  padding:12px 18px;
+  background:none;
+  border:none;
+  color:#ccc;
+  font-size:14px;
+}
+nav button.active{
+  background:#00ffd5;
+  color:#000;
+}
+section{
+  display:none;
+  padding:15px;
+}
+section.active{display:block;}
+
+.player{
+  background:#000;
+  margin-bottom:15px;
+}
+video{
+  width:100%;
+  max-height:220px;
+  background:#000;
+}
+
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(150px,1fr));
+  gap:12px;
+}
+.card{
+  background:#151515;
+  border-radius:10px;
+  overflow:hidden;
+  cursor:pointer;
+}
+.card img{
+  width:100%;
+  height:100px;
+  object-fit:cover;
+}
+.card div{
+  padding:8px;
+  font-size:13px;
+}
+.live{
+  color:#ff3b3b;
+  font-size:12px;
+}
+footer{
+  text-align:center;
+  padding:15px;
+  font-size:12px;
+  color:#777;
+}
+</style>
+</head>
+
+<body>
+
+<header>📺 ONLINE TV – Live • Movies • Series</header>
+
+<div class="player">
+  <video id="video" controls></video>
+</div>
+
+<nav>
+  <button class="active" onclick="showTab('sports')">Sports</button>
+  <button onclick="showTab('movies')">Movies & Series</button>
+  <button onclick="showTab('kids')">Kids</button>
+  <button onclick="showTab('telenovela')">Telenovela & Soaps</button>
+  <button onclick="showTab('music')">Music</button>
+  <button onclick="showTab('doc')">Documentary</button>
+</nav>
+
+<!-- SPORTS -->
+<section id="sports" class="active">
+  <h3>🏆 Sports Live</h3>
+  <div class="grid">
+    <div class="card" onclick="play('https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8')">
+      <img src="https://i.imgur.com/8Km9tLL.jpg">
+      <div><b>Live Football</b><br><span class="live">🔴 LIVE</span></div>
+    </div>
+    <div class="card" onclick="play('https://test-streams.mux.dev/test_001/stream.m3u8')">
+      <img src="https://i.imgur.com/l49aYS3.jpg">
+      <div><b>Sports Channel</b><br><span class="live">🔴 LIVE</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- MOVIES -->
+<section id="movies">
+  <h3>🎬 Movies & Series</h3>
+  <div class="grid">
+    <div class="card" onclick="play('https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4')">
+      <img src="https://i.imgur.com/7D7I6dI.jpg">
+      <div>Big Buck Bunny</div>
+    </div>
+    <div class="card" onclick="play('https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4')">
+      <img src="https://i.imgur.com/9yG3Z7y.jpg">
+      <div>Elephant Dream</div>
+    </div>
+  </div>
+</section>
+
+<!-- KIDS -->
+<section id="kids">
+  <h3>🧒 Kids Channels</h3>
+  <div class="grid">
+    <div class="card" onclick="play('https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/Sintel.mp4')">
+      <img src="https://i.imgur.com/yY6X9.jpg">
+      <div>Kids Cartoon</div>
+    </div>
+  </div>
+</section>
+
+<!-- TELENOVELA -->
+<section id="telenovela">
+  <h3>💖 Telenovela & Soaps</h3>
+  <div class="grid">
+    <div class="card" onclick="play('https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4')">
+      <img src="https://i.imgur.com/WdJ6n.jpg">
+      <div>Drama Series</div>
+    </div>
+  </div>
+</section>
+
+<!-- MUSIC -->
+<section id="music">
+  <h3>🎵 Music Live</h3>
+  <div class="grid">
+    <div class="card" onclick="play('https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8')">
+      <img src="https://i.imgur.com/4AiXzf8.jpg">
+      <div>Music TV<br><span class="live">🔴 LIVE</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- DOCUMENTARY -->
+<section id="doc">
+  <h3>🌍 Documentary</h3>
+  <div class="grid">
+    <div class="card" onclick="play('https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4')">
+      <img src="https://i.imgur.com/oYiTqum.jpg">
+      <div>Nature Doc</div>
+    </div>
+  </div>
+</section>
+
+<footer>© 2025 ONLINE TV | Built by Mjomba Gibson</footer>
+
+<script>
+function showTab(id){
+  document.querySelectorAll('section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('nav button').forEach(b=>b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  event.target.classList.add('active');
+}
+
+function play(url){
+  const video=document.getElementById('video');
+  if(Hls.isSupported() && url.includes('.m3u8')){
+    const hls=new Hls();
+    hls.loadSource(url);
+    hls.attachMedia(video);
+  }else{
+    video.src=url;
+  }
+  video.play();
+}
+</script>
+
+</body>
+  </html>
