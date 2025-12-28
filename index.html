@@ -1,165 +1,229 @@
 <!DOCTYPE html>
 <html lang="sw">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>ONLINE TV – Live & Movies</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
   <style>
+    * { box-sizing: border-box; }
     body {
       margin: 0;
       font-family: Arial, Helvetica, sans-serif;
       background: #0b0b0b;
       color: #fff;
     }
+
     header {
       background: #111;
-      padding: 15px;
+      padding: 14px;
       text-align: center;
       font-size: 22px;
       font-weight: bold;
       color: #00ffd5;
     }
-    nav {
+
+    /* VIDEO PLAYER */
+    .player {
+      position: relative;
+      background: #000;
+    }
+
+    video {
+      width: 100%;
+      height: auto;
+      background: #000;
+    }
+
+    .live-badge {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      background: red;
+      padding: 4px 8px;
+      font-size: 12px;
+      border-radius: 4px;
+    }
+
+    /* CATEGORY BAR */
+    .categories {
       display: flex;
       overflow-x: auto;
       background: #1a1a1a;
+      padding: 8px;
+      gap: 8px;
     }
-    nav button {
-      flex: none;
-      background: none;
-      border: none;
+
+    .categories button {
+      background: #222;
       color: #fff;
-      padding: 12px 16px;
+      border: none;
+      padding: 8px 14px;
+      border-radius: 20px;
+      white-space: nowrap;
       cursor: pointer;
-      font-size: 14px;
     }
-    nav button:hover {
+
+    .categories button.active {
       background: #00ffd5;
       color: #000;
+      font-weight: bold;
     }
-    .container {
-      padding: 15px;
-    }
-    h2 {
-      border-bottom: 1px solid #333;
-      padding-bottom: 5px;
-      color: #00ffd5;
-    }
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-      gap: 12px;
-    }
-    .card {
-      background: #1c1c1c;
+
+    /* CHANNEL LIST */
+    .channel-list {
       padding: 10px;
-      text-align: center;
-      border-radius: 6px;
+    }
+
+    .channel {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: #151515;
+      padding: 10px;
+      margin-bottom: 8px;
+      border-radius: 8px;
       cursor: pointer;
     }
-    .card:hover {
-      background: #2a2a2a;
+
+    .channel-info {
+      display: flex;
+      align-items: center;
+      gap: 10px;
     }
-    .player {
-      margin-top: 15px;
+
+    .channel-logo {
+      width: 42px;
+      height: 42px;
+      background: #333;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
     }
-    video, iframe {
-      width: 100%;
-      height: 220px;
-      background: #000;
+
+    .channel-name {
+      font-size: 14px;
+      font-weight: bold;
     }
+
+    .channel-status {
+      font-size: 12px;
+      color: #00ffd5;
+    }
+
+    /* EPG */
+    .epg {
+      background: #101010;
+      padding: 10px;
+      border-top: 1px solid #222;
+    }
+
+    .epg-title {
+      font-weight: bold;
+      margin-bottom: 8px;
+    }
+
+    .epg-item {
+      background: #181818;
+      padding: 8px;
+      border-radius: 6px;
+      margin-bottom: 6px;
+      font-size: 13px;
+    }
+
     footer {
       text-align: center;
       padding: 10px;
       font-size: 12px;
-      color: #aaa;
+      color: #888;
     }
   </style>
 </head>
+
 <body>
 
-<header>📺 ONLINE TV – Live • Movies • Series</header>
+<header>📺 ONLINE TV – TV ON THE GO</header>
 
-<nav>
-  <button onclick="show('live')">Live TV</button>
-  <button onclick="show('sports')">Sports</button>
-  <button onclick="show('kids')">Kids</button>
-  <button onclick="show('movies')">Movies & Series</button>
-  <button onclick="show('music')">Music</button>
-  <button onclick="show('docs')">Documentary</button>
-</nav>
+<!-- PLAYER -->
+<div class="player">
+  <span class="live-badge">LIVE</span>
+  <video id="videoPlayer" controls autoplay>
+    <source src="https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8" type="application/x-mpegURL">
+    Browser yako hai-support video.
+  </video>
+</div>
 
-<div class="container">
+<!-- CATEGORIES -->
+<div class="categories">
+  <button class="active">Sports</button>
+  <button>Movies</button>
+  <button>Kids</button>
+  <button>Music</button>
+  <button>Documentary</button>
+  <button>Telenovela</button>
+</div>
 
-  <div id="live" class="section">
-    <h2>🔴 Live TV</h2>
-    <div class="grid">
-      <div class="card" onclick="play('https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8')">Live Channel 1</div>
-      <div class="card" onclick="play('https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8')">Live Channel 2</div>
+<!-- CHANNEL LIST -->
+<div class="channel-list">
+
+  <div class="channel" onclick="playChannel('https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8')">
+    <div class="channel-info">
+      <div class="channel-logo">SPORT</div>
+      <div>
+        <div class="channel-name">Live Sports (4K)</div>
+        <div class="channel-status">Watching</div>
+      </div>
     </div>
+    ❤️
   </div>
 
-  <div id="sports" class="section" style="display:none">
-    <h2>⚽ Sports</h2>
-    <div class="grid">
-      <div class="card" onclick="play('https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8')">Sports Live</div>
+  <div class="channel" onclick="playChannel('https://bitdash-a.akamaihd.net/content/sintel/hls/playlist.m3u8')">
+    <div class="channel-info">
+      <div class="channel-logo">MOV</div>
+      <div>
+        <div class="channel-name">Movie Channel HD</div>
+        <div class="channel-status">Live</div>
+      </div>
     </div>
+    ❤️
   </div>
 
-  <div id="kids" class="section" style="display:none">
-    <h2>🧒 Kids</h2>
-    <div class="grid">
-      <div class="card" onclick="play('https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8')">Kids TV</div>
+  <div class="channel">
+    <div class="channel-info">
+      <div class="channel-logo">KIDS</div>
+      <div>
+        <div class="channel-name">Kids TV</div>
+        <div class="channel-status">Live</div>
+      </div>
     </div>
+    ❤️
   </div>
-
-  <div id="movies" class="section" style="display:none">
-    <h2>🎬 Movies & Series</h2>
-    <div class="grid">
-      <div class="card" onclick="playVideo()">Movie Sample</div>
-    </div>
-  </div>
-
-  <div id="music" class="section" style="display:none">
-    <h2>🎵 Music</h2>
-    <div class="grid">
-      <div class="card" onclick="play('https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8')">Music Live</div>
-    </div>
-  </div>
-
-  <div id="docs" class="section" style="display:none">
-    <h2>🌍 Documentary</h2>
-    <div class="grid">
-      <div class="card" onclick="play('https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8')">Nature Doc</div>
-    </div>
-  </div>
-
-  <div class="player" id="player"></div>
 
 </div>
 
+<!-- EPG -->
+<div class="epg">
+  <div class="epg-title">📅 EPG – Today</div>
+
+  <div class="epg-item">05:00 – 06:30 | Fit Morning</div>
+  <div class="epg-item">06:30 – 08:00 | Football Highlights</div>
+  <div class="epg-item">08:00 – 11:00 | Live Match 🔴</div>
+  <div class="epg-item">11:00 – 13:00 | Sports Today</div>
+</div>
+
 <footer>
-  © 2025 ONLINE TV | Built by Mjomba Gibson
+  © 2025 ONLINE TV | Live Streaming
 </footer>
 
 <script>
-  function show(id) {
-    document.querySelectorAll('.section').forEach(s => s.style.display = 'none');
-    document.getElementById(id).style.display = 'block';
-  }
-
-  function play(url) {
-    document.getElementById('player').innerHTML =
-      `<video controls autoplay src="${url}"></video>`;
-  }
-
-  function playVideo() {
-    document.getElementById('player').innerHTML =
-      `<video controls autoplay>
-        <source src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4" type="video/mp4">
-      </video>`;
+  function playChannel(url) {
+    const player = document.getElementById("videoPlayer");
+    player.src = url;
+    player.play();
   }
 </script>
 
 </body>
-</html>
+  </html>
